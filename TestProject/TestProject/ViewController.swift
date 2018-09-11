@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activityIndicatior: UIActivityIndicatorView!
-    var linkArray: [[String: [String: String]]] = []
+    var linkArray: [[String: String]] = []
     var countAllLinks = 0
     
     override func viewDidLoad() {
@@ -57,7 +57,7 @@ class ViewController: UIViewController {
                 guard let htmlString = htmlString else {
                     self.countAllLinks = self.countAllLinks - 1
                     return }
-                self.linkArray.append([urlString: [titleString: htmlString]])
+                self.linkArray.append([urlString: titleString])
                 self.tableView.reloadData()
                 if self.linkArray.count == self.countAllLinks {
                     self.activityIndicatior?.stopAnimating()
@@ -84,8 +84,10 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
                                    reuseIdentifier: "cell")
         }
         
-        let linkDic = linkArray[indexPath.row].values.first
-        cell?.textLabel?.text = linkDic?.keys.first
+        cell?.textLabel?.text = linkArray[indexPath.row].values.first
+        if cell?.textLabel?.text == " " {
+            cell?.textLabel?.text = "Page without title"
+        }
         return cell!
     }
     
